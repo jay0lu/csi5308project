@@ -1,0 +1,25 @@
+INITIALIZE:
+count := 0
+size := 1
+known := false
+send("Election", id(x), size) to right;
+min := id(x)
+
+ASLEEP
+  Spontaneously
+    INITIALIZE
+    become AWAKE
+
+  Receiving("Election", value, counter)
+    INITIALIZE;
+    send("Election", value, counter+1) to other
+
+    min := Min(min,value)
+    count := count+1
+    become AWAKE
+
+AWAKE
+  Receiving("Election", value, counter)
+    If value != id(x) then
+      send("Election", value, counter+1) to other
+      
