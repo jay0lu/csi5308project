@@ -18,7 +18,7 @@ public class makeRing {
         HashSet<Integer> randomNumbers = new HashSet<Integer>();
 
         for (i = 0; i < g; i++) {
-            e = rand.nextInt(100);  //number range
+            e = rand.nextInt(10000);  //number range
             randomNumbers.add(e);
             if (randomNumbers.size() <= 10) {
                 if (randomNumbers.size() == 10) {
