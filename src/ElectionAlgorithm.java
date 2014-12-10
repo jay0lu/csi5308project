@@ -15,6 +15,7 @@ public class ElectionAlgorithm {
 
     private static ArrayList<Integer> tempRing = (ArrayList) makeRing.ring.clone(); //make new ring to compare
     private static ArrayList<Integer> tempIncreaseRing = (ArrayList) makeRing.ring.clone();
+    private static ArrayList<Integer> tempDecreaseRing = (ArrayList) makeRing.ring.clone();
     //private static ArrayList<Integer> tempIncreaseRing = (ArrayList) makeRing.increaseRing.clone(); //clone cannot be used out of class
 
     public static void allTheWay() {
@@ -58,14 +59,14 @@ public class ElectionAlgorithm {
 
         System.out.println("| The leader is at " + (leaderAd + 1));
         System.out.println("| The message complexity is: " + count);
-        System.out.println("| Running time： "+(endTime-startTime)/1000+"µs");
+        System.out.println("| Running time： "+(endTime - startTime)/1000+"µs");
         System.out.println("***********************************************");
     }
 
     /**
      * as far
      */
-    public static void asFar(){
+    public static void asFar() {
 
         System.out.println("------------------------------------------------");
         System.out.println("| Using as far algorithm");
@@ -75,23 +76,27 @@ public class ElectionAlgorithm {
 
         int count = 0;
         int x = ringElection.numNode + 2;
-        for(int i = 0; i < ringElection.numNode; i++){
-            for(int j = i+1; j < ringElection.numNode; j++) {
+        for (int i = 0; i < ringElection.numNode; i++) {
+            for (int j = i + 1; j < ringElection.numNode; j++) {
                 count++;
-                if (tempRing.get(i) > tempRing.get(j)){
+                if (tempRing.get(i) > tempRing.get(j)) {
+//                    count++;
                     break;
-                }else if(x > tempRing.get(i)){
+                } else if (x > tempRing.get(i)) {
                     x = tempRing.get(i);
+//                    count++;
                 }
             }
-            for(int a = 0; a < i; a++){
-                count++;
-                if(tempRing.get(i) > tempRing.get(a)){
+            for (int a = 0; a < i; a++) {
+                if (tempRing.get(i) > tempRing.get(a)) {
+//                    count++;
                     break;
-                }else if(x > tempRing.get(i)){
+                } else if (x > tempRing.get(i)) {
                     x = tempRing.get(i);
+//                    count++;
                 }
             }
+            count++;
         }
 
         int leaderAd = 0;
@@ -107,54 +112,111 @@ public class ElectionAlgorithm {
         System.out.println("| The normal case:");
         System.out.println("| The leader is at " + (leaderAd + 1));
         System.out.println("| The message complexity is: " + count);
-        System.out.println("| Running time： "+(endTime-startTime)/1000+"µs");
+        System.out.println("| Running time： " + (endTime - startTime) / 1000 + "µs");
 
         // worst case
-        long bStartTime = System.nanoTime();   //algorithm start time
+        long wStartTime = System.nanoTime();   //algorithm start time
 
         Collections.sort(tempIncreaseRing);
+        int wCount = 0;
+        int wx = ringElection.numNode + 2;
+        for (int i = 0; i < ringElection.numNode; i++) {
+            for (int j = i + 1; j < ringElection.numNode; j++) {
+                wCount++;
+                if (tempIncreaseRing.get(i) > tempIncreaseRing.get(j)) {
+//                    wCount++;
+                    break;
+                } else if (wx > tempIncreaseRing.get(i)) {
+                    wx = tempIncreaseRing.get(i);
+//                    wCount++;
+                }
+            }
+            for (int a = 0; a < i; a++) {
+                if (tempIncreaseRing.get(i) > tempIncreaseRing.get(a)) {
+//                    wCount++;
+                    break;
+                } else if (wx > tempIncreaseRing.get(i)) {
+                    wx = tempIncreaseRing.get(i);
+//                    wCount++;
+                }
+            }
+            wCount++;
+        }
+
+        int wLeaderAd = 0;
+        for (int y = 0; y < ringElection.numNode; y++) {
+            if (wx == tempIncreaseRing.get(y)) {
+                wLeaderAd = y;
+                System.out.println("| The leader id is " + tempIncreaseRing.get(y));
+            }
+            wCount++; // notification.
+        }
+        long wEndTime = System.nanoTime(); //algorithm end time
+
+        System.out.println("|-----------------------------------------------");
+        System.out.println("| The worst case:");
+        System.out.println("| " + tempIncreaseRing);
+        System.out.println("| The leader is at " + (wLeaderAd + 1));
+        System.out.println("| The message complexity is: " + wCount);
+        System.out.println("| Running time： " + (wEndTime - wStartTime) / 1000 + "µs");
+        System.out.println("***********************************************");
+
+        //best case
+        Collections.sort(tempIncreaseRing);
+        int m = 0;
+        for(int bs = ringElection.numNode - 1; bs > -1; bs--){
+            tempDecreaseRing.add(m,tempIncreaseRing.get(bs));
+            tempDecreaseRing.remove(10);
+            m++;
+        }
+//        System.out.println(tempDecreaseRing);
+
+        long bStartTime = System.nanoTime();   //algorithm start time
+
         int bCount = 0;
         int bx = ringElection.numNode + 2;
         for(int i = 0; i < ringElection.numNode; i++){
             for(int j = i+1; j < ringElection.numNode; j++) {
                 bCount++;
-                if (tempIncreaseRing.get(i) > tempIncreaseRing.get(j)){
+                if (tempDecreaseRing.get(i) > tempDecreaseRing.get(j)){
+//                    bCount++;
                     break;
-                }else if(bx > tempIncreaseRing.get(i)){
-                    bx = tempIncreaseRing.get(i);
+                }else if(bx > tempDecreaseRing.get(i)){
+                    bx = tempDecreaseRing.get(i);
+//                    bCount++;
                 }
             }
             for(int a = 0; a < i; a++){
-                bCount++;
-                if(tempIncreaseRing.get(i) > tempIncreaseRing.get(a)){
+                if(tempDecreaseRing.get(i) > tempDecreaseRing.get(a)){
+//                    bCount++;
                     break;
-                }else if(bx > tempIncreaseRing.get(i)){
-                    bx = tempIncreaseRing.get(i);
+                }else if(bx > tempDecreaseRing.get(i)){
+                    bx = tempDecreaseRing.get(i);
+//                    bCount++;
                 }
             }
+            bCount++;
         }
 
         int bLeaderAd = 0;
         for (int y = 0; y < ringElection.numNode; y++) {
-            if (bx == tempIncreaseRing.get(y)) {
+            if (bx == tempDecreaseRing.get(y)) {
                 bLeaderAd = y;
-                System.out.println("| The leader id is " + tempIncreaseRing.get(y));
+                System.out.println("| The leader id is " + tempDecreaseRing.get(y));
             }
             bCount++; // notification.
         }
         long bEndTime = System.nanoTime(); //algorithm end time
 
         System.out.println("|-----------------------------------------------");
-        System.out.println("| The worst case:");
-        System.out.println("| " + tempIncreaseRing);
+        System.out.println("| The best case:");
+        System.out.println("| " + tempDecreaseRing);
         System.out.println("| The leader is at " + (bLeaderAd + 1));
         System.out.println("| The message complexity is: " + bCount);
         System.out.println("| Running time： "+(bEndTime-bStartTime)/1000+"µs");
         System.out.println("***********************************************");
-
-
-
     }
+
 
     /**
      * alternate
