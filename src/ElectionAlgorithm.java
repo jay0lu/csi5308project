@@ -102,6 +102,6 @@ public class ElectionAlgorithm {
      * alternate
      */
     public static void alternate(){
-        
+
     }
 }
