@@ -45,6 +45,7 @@ public class makeRing {
         System.out.println("The ring is:");
         System.out.println(ring);
         System.out.println(increaseRing);
+        System.out.println("\n");
     }
 }
 

@@ -60,7 +60,7 @@ public class ElectionAlgorithm {
         System.out.println("| The leader is at " + (leaderAd + 1));
         System.out.println("| The message complexity is: " + count);
         System.out.println("| Running time： "+(endTime - startTime)/1000+"µs");
-        System.out.println("***********************************************");
+        System.out.println("***********************************************\n");
     }
 
     /**
@@ -70,7 +70,6 @@ public class ElectionAlgorithm {
 
         System.out.println("------------------------------------------------");
         System.out.println("| Using as far algorithm");
-        System.out.println("|");
 
         long startTime = System.nanoTime();   //algorithm start time
 
@@ -109,6 +108,7 @@ public class ElectionAlgorithm {
         }
         long endTime = System.nanoTime(); //algorithm end time
 
+        System.out.println("|");
         System.out.println("| The normal case:");
         System.out.println("| The leader is at " + (leaderAd + 1));
         System.out.println("| The message complexity is: " + count);
@@ -147,7 +147,7 @@ public class ElectionAlgorithm {
         for (int y = 0; y < ringElection.numNode; y++) {
             if (wx == tempIncreaseRing.get(y)) {
                 wLeaderAd = y;
-                System.out.println("| The leader id is " + tempIncreaseRing.get(y));
+//                System.out.println("| The leader id is " + tempIncreaseRing.get(y));
             }
             wCount++; // notification.
         }
@@ -159,7 +159,7 @@ public class ElectionAlgorithm {
         System.out.println("| The leader is at " + (wLeaderAd + 1));
         System.out.println("| The message complexity is: " + wCount);
         System.out.println("| Running time： " + (wEndTime - wStartTime) / 1000 + "µs");
-        System.out.println("***********************************************");
+        System.out.println("|-----------------------------------------------");
 
         //best case
         Collections.sort(tempIncreaseRing);
@@ -202,19 +202,18 @@ public class ElectionAlgorithm {
         for (int y = 0; y < ringElection.numNode; y++) {
             if (bx == tempDecreaseRing.get(y)) {
                 bLeaderAd = y;
-                System.out.println("| The leader id is " + tempDecreaseRing.get(y));
+//                System.out.println("| The leader id is " + tempDecreaseRing.get(y));
             }
             bCount++; // notification.
         }
         long bEndTime = System.nanoTime(); //algorithm end time
 
-        System.out.println("|-----------------------------------------------");
         System.out.println("| The best case:");
         System.out.println("| " + tempDecreaseRing);
         System.out.println("| The leader is at " + (bLeaderAd + 1));
         System.out.println("| The message complexity is: " + bCount);
         System.out.println("| Running time： "+(bEndTime-bStartTime)/1000+"µs");
-        System.out.println("***********************************************");
+        System.out.println("***********************************************\n");
     }
 
 
@@ -246,6 +245,6 @@ public class ElectionAlgorithm {
         System.out.println("| The leader is at " + (leaderAd + 1));
         System.out.println("| The message complexity is: " + count);
         System.out.println("| Running time： "+(endTime-startTime)/1000+"µs");
-        System.out.println("***********************************************");
+        System.out.println("***********************************************\n");
     }
 }
