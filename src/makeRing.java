@@ -19,7 +19,6 @@ public class makeRing {
         // store in st
 
 
-
         int n = ringElection.numNode;
         Random rand = new Random();
         boolean[] bool = new boolean[n];
@@ -37,8 +36,8 @@ public class makeRing {
             ring.add(num + 1); //make number [1-n]
         }
 
-        ArrayList increaseRing = (ArrayList)ring.clone();
-
+        // best case for asFar
+        ArrayList increaseRing = (ArrayList) ring.clone();
         Collections.sort(increaseRing);
 
         System.out.println("------------------------------------------------");

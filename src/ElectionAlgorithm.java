@@ -58,8 +58,14 @@ public class ElectionAlgorithm {
      * as far
      */
     public static void asFar(){
-        
-
+        for(int i = 0; i < ringElection.numNode; ){
+            for(int j = i+1; j < ringElection.numNode; j++) {
+                if (tempRing.get(i) > tempRing.get(j)){
+                    break;
+                }
+                i++;
+            }
+        }
     }
 
 }
