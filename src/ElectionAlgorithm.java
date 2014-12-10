@@ -13,6 +13,9 @@ public class ElectionAlgorithm {
     private static ArrayList<Integer> tempRing = (ArrayList) makeRing.ring.clone(); //make new ring to compare
 
     public static void allTheWay() {
+        System.out.println("------------------------------------------------");
+        System.out.println("| Using All the way algorithm");
+        System.out.println("|");
         long startTime = System.nanoTime();   //algorithm start time
         int count = 0;
         int x = ringElection.numNode + 2; //initialize x bigger than nodeId, store the smallest id.
@@ -40,15 +43,12 @@ public class ElectionAlgorithm {
         for (int y = 0; y < ringElection.numNode; y++) {
             if (x == tempRing.get(y)) {
                 leaderAd = y;
-                System.out.println("The leader id is " + tempRing.get(y));
+                System.out.println("| The leader id is " + tempRing.get(y));
             }
-            count++;
         }
         long endTime = System.nanoTime(); //algorithm end time
 
         System.out.println("| The leader is at " + (leaderAd + 1));
-        System.out.println("------------------------------------------------");
-        System.out.println("| Using All the way algorithm");
         System.out.println("| The message complexity is: " + count);
         System.out.println("| Running time： "+(endTime-startTime)/1000+"µs");
         System.out.println("***********************************************");
@@ -58,14 +58,50 @@ public class ElectionAlgorithm {
      * as far
      */
     public static void asFar(){
-        for(int i = 0; i < ringElection.numNode; ){
+        System.out.println("------------------------------------------------");
+        System.out.println("| Using as far algorithm");
+        System.out.println("|");
+        long startTime = System.nanoTime();   //algorithm start time
+        int count = 0;
+        int x = ringElection.numNode + 2;
+        for(int i = 0; i < ringElection.numNode; i++){
             for(int j = i+1; j < ringElection.numNode; j++) {
+                count++;
                 if (tempRing.get(i) > tempRing.get(j)){
                     break;
+                }else if(x > tempRing.get(i)){
+                    x = tempRing.get(i);
                 }
-                i++;
+            }
+            for(int a = 0; a < i; a++){
+                count++;
+                if(tempRing.get(i) > tempRing.get(a)){
+                    break;
+                }else if(x > tempRing.get(i)){
+                    x = tempRing.get(i);
+                }
             }
         }
+
+        int leaderAd = 0;
+        for (int y = 0; y < ringElection.numNode; y++) {
+            if (x == tempRing.get(y)) {
+                leaderAd = y;
+                System.out.println("| The leader id is " + tempRing.get(y));
+            }
+            count++; // notifacation.
+        }
+        long endTime = System.nanoTime(); //algorithm end time
+        System.out.println("| The leader is at " + (leaderAd + 1));
+        System.out.println("| The message complexity is: " + count);
+        System.out.println("| Running time： "+(endTime-startTime)/1000+"µs");
+        System.out.println("***********************************************");
     }
 
+    /**
+     * alternate
+     */
+    public static void alternate(){
+        
+    }
 }

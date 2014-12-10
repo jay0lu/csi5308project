@@ -40,6 +40,7 @@ public class ringElection {
         System.out.println("The number of nodes in ring is: " + numNode);
         makeRing.ring();
         ElectionAlgorithm.allTheWay();
+        ElectionAlgorithm.asFar();
 
     }
 }
