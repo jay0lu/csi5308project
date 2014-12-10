@@ -2,14 +2,16 @@
  * Created by Jaylu
  * Get size of ring
  */
+
 import java.io.*;
 
 public class ringElection {
 
     public static int numNode;
+
     public static void main(String[] args) throws IOException {
         // public int numNode;
-        while (true) {
+        //while (true) {
 
             int num;
             numNode = 0;
@@ -20,9 +22,9 @@ public class ringElection {
             System.out.println("Ring Election Algorithm Comparison");
             System.out.println("-----------------------------------------------");
             System.out.println("Input the number of nodes(smaller than 10000):");
-            try{
+            try {
 
-            }catch(Exception e){
+            } catch (Exception e) {
                 System.out.println(e);
             }
             str = buf.readLine();
@@ -39,7 +41,7 @@ public class ringElection {
             System.out.println("The number of nodes in ring is: " + numNode);
             makeRing.ring();
             ElectionAlgorithm.allTheWay();
-        }
+        //}
 
 
     }
