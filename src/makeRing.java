@@ -13,6 +13,7 @@ import java.util.HashSet;
 public class makeRing {
 
     public static ArrayList<Integer> ring = new ArrayList();
+    public static ArrayList<Integer> increaseRing = (ArrayList) ring.clone();
 
     public static void ring() {
         //generate [0-n) unique number
@@ -43,7 +44,7 @@ public class makeRing {
         System.out.println("------------------------------------------------");
         System.out.println("The ring is:");
         System.out.println(ring);
-        //System.out.println(increaseRing);
+        System.out.println(increaseRing);
     }
 }
 
