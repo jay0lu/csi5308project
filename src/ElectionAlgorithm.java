@@ -213,69 +213,81 @@ public class ElectionAlgorithm {
 
         long startTime = System.nanoTime();   //algorithm start time
 
-        ArrayList<Integer> tempStatu = new ArrayList(); //use to define the node is passive or not. 1 is passive, 2 is leader.
+        ArrayList<Integer> tempState = new ArrayList(); //use to define the node is passive or not. 1 is passive
         for(int t = 0; t < ringElection.numNode; t++){
-            tempStatu.add(0);
+            tempState.add(0);
         }
+//        System.out.println(tempStatu);
 
         int count = 0;
+        int dowhile = 0; //count number of passive node.
+//        int oJump = 0; // jump passive node in odd stage
+        int eJump = 0; // jump passive node in even stage
+        int nodeLeft = ringElection.numNode;
         int x = ringElection.numNode+2; //store the small id
-        int y = 0; //store the big id
-        int st = 1; //stage number
-//        while()
+        int st = 0; //stage number
+        while(dowhile != ringElection.numNode-1) {
+            st++;
 
-            for(int i = 0; i < ringElection.numNode; i++){
-                if(st%2 != 0){ // odd stage, big id become passive.{
-                    for(int j = i+1; j < ringElection.numNode; j++){
-                        count++;
-                        if(tempRing.get(i) > tempRing.get(j)){
-                            tempStatu.add(i,1);
-                            tempStatu.remove(i+1);
-                            break;
-                        }else if(x > tempRing.get(i)){
-                            x = tempRing.get(i);
+            //odd stage
+            if(st%2 != 0){
+                for(int i = 0; i < ringElection.numNode-1; i++){
+                    int jump = 0; //jump passive node
+                    if(tempState.get(i) == 0){  //self node is passive
+
+                    }else if(tempState.get(i + 1) == 0){  //next node is passive
+                        jump = i + 1;
+                    }
+                    while(tempState.get(jump) == 0 && jump < ringElection.numNode - 1){
+                        jump++;
+                    }
+                    if(tempRing.get(i) < tempRing.get(jump)){
+                        tempState.add(jump,1);
+                        tempState.remove(jump+1); //change state
+                    }else{
+                        if(tempRing.get(i) < tempRing.get(i + 1)){
+                            tempState.add(i+1, 1);
+                            tempState.remove(i + 2);
                         }
                     }
-                    for(int a = 0; a < i; a++){
-                        if(tempRing.get(i) > tempRing.get(a)){
-                            tempStatu.add(i,1);
-                            tempStatu.remove(i+1);
-                            break;
-                        }else if(x > tempRing.get(i)){
-                            x = tempRing.get(i);
+                    for(int i = 0; i < ringElection.numNode - 1; i++){
+                        int jump = 0;
+                        if(tempState)
+                        if(tempState.get(i) == 0){
+                            jump = i;
                         }
+
                     }
-                    st++;
-                }else if(st%2 == 0){ // even stage, small id become passive.{
-                    for(int j = i+1; j < ringElection.numNode; j++){
-                        count++;
-                        if(tempRing.get(i) < tempRing.get(j)){
-                            tempStatu.add(i,1);
-                            tempStatu.remove(i+1);
-                            break;
-                        }else if(y < tempRing.get(i)){
-                            y = tempRing.get(i);
-                        }
-                    }
-                    for(int a = 0; a < i; a++){
-                        if(tempRing.get(i) < tempRing.get(a)){
-                            tempStatu.add(i,1);
-                            tempStatu.remove(i+1);
-                            break;
-                        }else if(y < tempRing.get(i)){
-                            y = tempRing.get(i);
-                        }
-                    }
-                    st++;
+                }
+            }
+        }
+
+
+
+            for(int i = 0; i < ringElection.numNode; i++) {
+                if (tempStatu.get(i) == 0) {
+                    dowhile++;
                 }
             }
 
+
+
+
         int leaderAd = 0;
         //add notification
+        for (int z = 0; z < ringElection.numNode; z++) {
+            if (x == tempRing.get(z)) {
+                leaderAd = z;
+                System.out.println("| The leader is "+tempRing.get(z));
+            }
+            count++; // notification.
+        }
+
         long endTime = System.nanoTime(); //algorithm end time
 
+        System.out.println("stage number "+st);
         System.out.println("| The leader is at " + (leaderAd + 1));
-        System.out.println("| The message complexity is: " + count);
+        System.out.println("| The message complexity is: " + st*ringElection.numNode);
         System.out.println("| Running time： "+(endTime-startTime)/1000+"µs");
         System.out.println("***********************************************\n");
     }

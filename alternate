@@ -1,0 +1,109 @@
+import java.io.IOException;
+
+// Alternate Algorithm.
+
+class Alternate {
+	private static int[] alRings = new int[100];
+	private static int[] alRings1 = new int[100];
+	public static int alLeader = 0;
+	public static int alLeaderAt = 0;
+	public static int alCount = 0;
+	private static boolean keepgoing = true;
+
+	public static void getAlRings(int[] rings, int s) throws IOException {
+		int size = s;
+		for (int i = 0; i < s; i++) {
+			alRings[i] = rings[i];	// For original ring storage.
+			alRings1[i] = rings[i]; // For modification.
+		}
+		getAlternate(alRings, size);
+	}
+
+	// Algorithm method
+	// the nodes become passive by being signed to 0.
+	public static void getAlternate(int[] rings, int s) throws IOException {
+		int n = 0; // label of stages.
+		while (keepgoing == true) {
+			n++;
+			// odd stage.
+			if (n % 2 != 0) {
+				for (int i = 0; i < s - 1; i++) {
+					int x = 0;
+					if (alRings1[i + 1] == 0) { // when neighbor becomes passive (0 here)
+						x = i + 1;
+						while (alRings1[x] == 0 && x < s - 1) { // forward the comparing (message)
+							x++;
+						}
+						if (alRings[i] < alRings[x])
+							alRings1[x] = 0;
+					} else {
+						if (alRings[i] < alRings[i + 1])
+							alRings1[i + 1] = 0;
+					}
+				}
+				for (int i = 0; i < s - 1; i++) {
+					int x = 0;
+					if (alRings1[i] == 0) { // when neighbor becomes passive
+						x = i;
+						while (alRings1[x] == 0 && x < s - 1) { // forward the comparing
+							x++;
+						}
+						if (alRings[s - 1] < alRings[x])
+							alRings1[x] = 0;
+					} else {
+						if (alRings[s - 1] < alRings[0])
+							alRings1[0] = 0;
+					}
+				}
+			} else { // even stage.
+				for (int i = s - 1; i > 1; i--) {
+					int x = 0;
+					if (alRings1[i - 1] == 0) {
+						x = i - 1;
+						while (alRings1[x] == 0 && x > 0) {
+							x--;
+						}
+						if (alRings[i] < alRings[x])
+							alRings1[x] = 0;
+					} else {
+						if (alRings[i] < alRings[i - 1])
+							alRings1[i - 1] = 0;
+					}
+				}
+				for (int i = s - 1; i > 0; i--) {
+					int x = 0;
+					if (alRings1[i] == 0) {
+						x = i;
+						while (alRings1[x] == 0 && x > 0) {
+							x--;
+						}
+						if (alRings[0] < alRings[x])
+							alRings1[x] = 0;
+					} else {
+						if (alRings[0] < alRings[s - 1])
+							alRings1[s - 1] = 0;
+					}
+				}
+			}
+			int terS = 0;
+			for (int i = 0; i < s; i++) {
+				if (alRings1[i] == 0)
+					terS++; // prepare to determine if terminate.
+			}
+
+			if (terS == s - 1)
+				keepgoing = false;
+		}
+		keepgoing = true; // terminate.
+
+		// Find Leader.
+		for (int i = 0; i < s; i++) {
+			if (alRings1[i] != 0) {
+				alLeader = alRings1[i];
+				alLeaderAt = i + 1;
+			}
+		}
+		alCount = n*s+s; // (+s) means notification part.
+		OutPut.outResults(3, s);
+	}
+}
