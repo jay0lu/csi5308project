@@ -41,7 +41,7 @@ public class ringElection {
             makeRing.ring();
             ElectionAlgorithm.allTheWay();
             ElectionAlgorithm.asFar();
-//            ElectionAlgorithm.alternate(); // not finished
+            ElectionAlgorithm.alternate(); // not finished
         }
 
     }

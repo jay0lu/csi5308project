@@ -157,7 +157,7 @@ public class ElectionAlgorithm {
         int m = 0;
         for(int bs = ringElection.numNode - 1; bs > -1; bs--){
             tempDecreaseRing.add(m,tempIncreaseRing.get(bs));
-            tempDecreaseRing.remove(10);
+            tempDecreaseRing.remove(ringElection.numNode);
             m++;
         }
 //        System.out.println(tempDecreaseRing);
@@ -215,104 +215,115 @@ public class ElectionAlgorithm {
 
         ArrayList<Integer> tempState = new ArrayList(); //use to define the node is passive or not. 1 is passive
         for(int t = 0; t < ringElection.numNode; t++){
-            tempState.add(0);
+            tempState.add(t,0);
         }
 //        System.out.println(tempState);
 
         int count = 0;
         int dowhile = 0; //count number of passive node.
-//        int oJump = 0; // jump passive node in odd stage
-//        int eJump = 0; // jump passive node in even stage
         int nodeLeft = ringElection.numNode;
         int x = ringElection.numNode+2; //store the small id
+ //       int x = 1;
         int st = 0; //stage number
         while(dowhile != ringElection.numNode-1) {
             st++;
 
             //odd stage
             if(st%2 != 0){
-                for(int i = 0; i < ringElection.numNode-1; i++){
+                for(int i = 0; i < ringElection.numNode-1; i++) {
                     int jump = 0; //jump passive node
 //                    if(tempState.get(i) == 0){  //self node is passive
 
-                    if(tempState.get(i + 1) == 0){  //next node is passive
+                    if (tempState.get(i + 1) == 1) {  //next node is passive
                         jump = i + 1;
-                    }
-                    while(tempState.get(jump) == 0 && jump < ringElection.numNode - 1){
+
+                    while (tempState.get(jump) == 1 && jump < ringElection.numNode - 1) {
                         jump++;
                     }
-                    if(tempRing.get(i) < tempRing.get(jump)){
-                        tempState.add(jump,1);
-                        tempState.remove(jump+1); //change state
-                    }else{
-                        if(tempRing.get(i) < tempRing.get(i + 1)){
-                            tempState.add(i+1, 1);
+                    if (tempRing.get(i) < tempRing.get(jump)) {
+                        tempState.add(jump, 1);
+                        tempState.remove(jump + 1); //change state
+                    }
+                    } else {
+                        if (tempRing.get(i) < tempRing.get(i + 1)) {
+                            tempState.add(i + 1, 1);
                             tempState.remove(i + 2);
                         }
                     }
-                    for(int a = 0; a < ringElection.numNode - 1; a++){
-                        int jump1 = 0;
-                        if(tempState.get(a) == 0){
-                            jump1 = a;
-                            while(tempState.get(jump1) == 0 && jump1 < ringElection.numNode - 1){
-                                jump1++;
+                }
+                    for(int i = 0; i < ringElection.numNode - 1; i++) {
+                        int jump = 0;
+                        if (tempState.get(i) == 1) {
+                            jump = i;
+                            while (tempState.get(jump) == 1 && jump < ringElection.numNode - 1) {
+                                jump++;
                             }
-                            if(tempRing.get(ringElection.numNode-1) < tempRing.get(jump1)){
-                                tempState.add(jump1, 1);
-                                tempState.remove(jump1 + 1);
-                            }else if(tempRing.get(ringElection.numNode - 1) < tempRing.get(jump1)){
-                                tempState.add(0,1);
+                            if (tempRing.get(ringElection.numNode - 1) < tempRing.get(jump)) {
+                                tempState.add(jump, 1);
+                                tempState.remove(jump + 1);
+                            }
+                        } else {
+                            if (tempRing.get(i) < tempRing.get(0)) {
+                                tempState.add(0, 1);
                                 tempState.remove(1);
                             }
+
                         }
+                    }
                     }  //even stage
-                        for(int b = ringElection.numNode - 1; b > 1; b--){
-                            int jump2;
-                            if(tempState.get(b-1) == 0){
-                                jump2 = b - 1;
-                                while(tempRing.get(jump2) == 0 && jump2 > 0){
-                                    jump2--;
-                                }
-                                if(tempRing.get(b) < tempRing.get(jump2)){
-                                    tempState.add(jump2,1);
-                                    tempState.remove(jump2 + 1);
-                                }else if(tempRing.get(b) < tempRing.get(b-1)) {
-                                    tempState.get(b - 1);
-                                }
-                            }
-                            for (int c = ringElection.numNode - 1; c > 0; c--) {
-                                int jump3 = 0;
-                                if (tempState.get(i) == 0) {
-                                    jump3 = i;
-                                    while (tempState.get(jump3) == 0 && jump3 > 0) {
-                                        jump3--;
-                                    }
-                                    if (tempRing.get(0) < tempRing.get(jump3)) {
-                                        tempRing.add(jump3, 1);
-                                        tempRing.remove(jump3 + 1);
-                                    }
-                                } else {
-                                    if (tempRing.get(0) < tempRing.get(ringElection.numNode - 1)) {
-                                        tempState.add(ringElection.numNode - 1, 1);
-                                        tempState.remove(ringElection.numNode);
-                                    }
-                                }
+                        else {
+                for (int i = ringElection.numNode - 1; i > 1; i--) {
+                    int jump;
+                    if (tempState.get(i - 1) == 1) {
+                        jump = i - 1;
+                        while (tempRing.get(jump) == 1 && jump > 0) {
+                            jump--;
                         }
-                            for(int d = 0; d < ringElection.numNode; d++){
-                                if(tempState.get(d) == 1){
-                                    dowhile++;
-                                }
-                            }
+                        if (tempRing.get(i) < tempRing.get(jump)) {
+                            tempState.add(jump, 1);
+                            tempState.remove(jump + 1);
+                        }
+                    } else {
+                        if (tempRing.get(i) < tempRing.get(i - 1))
+                            tempState.get(i - 1);
+                    }
+                }
+                for (int i = ringElection.numNode - 1; i > 0; i--) {
+                    int jump3 = 0;
+                    if (tempState.get(i) == 1) {
+                        jump3 = i;
+                        while (tempState.get(jump3) == 1 && jump3 > 0) {
+                            jump3--;
+                        }
+                        if (tempRing.get(0) < tempRing.get(jump3)) {
+                            tempState.add(jump3, 1);
+                            tempState.remove(jump3 + 1);
+                        }
+                    } else {
+                        if (tempRing.get(0) < tempRing.get(ringElection.numNode - 1)) {
+                            tempState.add(ringElection.numNode - 1, 1);
+                            tempState.remove(ringElection.numNode);
+                        }
                     }
                 }
             }
+            dowhile = 0;
+            for(int d = 0; d < ringElection.numNode; d++){
+                   if(tempState.get(d) == 1){
+                            dowhile++;
+                   }
+            }
+
+
         }
+
 
         int leaderAd = 0;
         //add notification
+//        int y = 0;
         for (int z = 0; z < ringElection.numNode; z++) {
             if (x == tempRing.get(z)) {
-                leaderAd = z;
+                leaderAd = z + 1;
                 System.out.println("| The leader is "+tempRing.get(z));
             }
             count++; // notification.
