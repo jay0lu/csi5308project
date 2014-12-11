@@ -79,20 +79,16 @@ public class ElectionAlgorithm {
             for (int j = i + 1; j < ringElection.numNode; j++) {
                 count++;
                 if (tempRing.get(i) > tempRing.get(j)) {
-//                    count++;
                     break;
                 } else if (x > tempRing.get(i)) {
                     x = tempRing.get(i);
-//                    count++;
                 }
             }
             for (int a = 0; a < i; a++) {
                 if (tempRing.get(i) > tempRing.get(a)) {
-//                    count++;
                     break;
                 } else if (x > tempRing.get(i)) {
                     x = tempRing.get(i);
-//                    count++;
                 }
             }
             count++;
@@ -124,20 +120,16 @@ public class ElectionAlgorithm {
             for (int j = i + 1; j < ringElection.numNode; j++) {
                 wCount++;
                 if (tempIncreaseRing.get(i) > tempIncreaseRing.get(j)) {
-//                    wCount++;
                     break;
                 } else if (wx > tempIncreaseRing.get(i)) {
                     wx = tempIncreaseRing.get(i);
-//                    wCount++;
                 }
             }
             for (int a = 0; a < i; a++) {
                 if (tempIncreaseRing.get(i) > tempIncreaseRing.get(a)) {
-//                    wCount++;
                     break;
                 } else if (wx > tempIncreaseRing.get(i)) {
                     wx = tempIncreaseRing.get(i);
-//                    wCount++;
                 }
             }
             wCount++;
@@ -147,7 +139,6 @@ public class ElectionAlgorithm {
         for (int y = 0; y < ringElection.numNode; y++) {
             if (wx == tempIncreaseRing.get(y)) {
                 wLeaderAd = y;
-//                System.out.println("| The leader id is " + tempIncreaseRing.get(y));
             }
             wCount++; // notification.
         }
@@ -179,20 +170,16 @@ public class ElectionAlgorithm {
             for(int j = i+1; j < ringElection.numNode; j++) {
                 bCount++;
                 if (tempDecreaseRing.get(i) > tempDecreaseRing.get(j)){
-//                    bCount++;
                     break;
                 }else if(bx > tempDecreaseRing.get(i)){
                     bx = tempDecreaseRing.get(i);
-//                    bCount++;
                 }
             }
             for(int a = 0; a < i; a++){
                 if(tempDecreaseRing.get(i) > tempDecreaseRing.get(a)){
-//                    bCount++;
                     break;
                 }else if(bx > tempDecreaseRing.get(i)){
                     bx = tempDecreaseRing.get(i);
-//                    bCount++;
                 }
             }
             bCount++;
@@ -202,7 +189,6 @@ public class ElectionAlgorithm {
         for (int y = 0; y < ringElection.numNode; y++) {
             if (bx == tempDecreaseRing.get(y)) {
                 bLeaderAd = y;
-//                System.out.println("| The leader id is " + tempDecreaseRing.get(y));
             }
             bCount++; // notification.
         }
@@ -227,16 +213,62 @@ public class ElectionAlgorithm {
 
         long startTime = System.nanoTime();   //algorithm start time
 
-        ArrayList<Integer> tempStatu = new ArrayList(); //use to define the node is passive or not.
+        ArrayList<Integer> tempStatu = new ArrayList(); //use to define the node is passive or not. 1 is passive, 2 is leader.
         for(int t = 0; t < ringElection.numNode; t++){
             tempStatu.add(0);
         }
 
         int count = 0;
+        int x = ringElection.numNode+2; //store the small id
+        int y = 0; //store the big id
         int st = 1; //stage number
-        if(st%2 != 0){ // odd stage
+//        while()
 
-        }
+            for(int i = 0; i < ringElection.numNode; i++){
+                if(st%2 != 0){ // odd stage, big id become passive.{
+                    for(int j = i+1; j < ringElection.numNode; j++){
+                        count++;
+                        if(tempRing.get(i) > tempRing.get(j)){
+                            tempStatu.add(i,1);
+                            tempStatu.remove(i+1);
+                            break;
+                        }else if(x > tempRing.get(i)){
+                            x = tempRing.get(i);
+                        }
+                    }
+                    for(int a = 0; a < i; a++){
+                        if(tempRing.get(i) > tempRing.get(a)){
+                            tempStatu.add(i,1);
+                            tempStatu.remove(i+1);
+                            break;
+                        }else if(x > tempRing.get(i)){
+                            x = tempRing.get(i);
+                        }
+                    }
+                    st++;
+                }else if(st%2 == 0){ // even stage, small id become passive.{
+                    for(int j = i+1; j < ringElection.numNode; j++){
+                        count++;
+                        if(tempRing.get(i) < tempRing.get(j)){
+                            tempStatu.add(i,1);
+                            tempStatu.remove(i+1);
+                            break;
+                        }else if(y < tempRing.get(i)){
+                            y = tempRing.get(i);
+                        }
+                    }
+                    for(int a = 0; a < i; a++){
+                        if(tempRing.get(i) < tempRing.get(a)){
+                            tempStatu.add(i,1);
+                            tempStatu.remove(i+1);
+                            break;
+                        }else if(y < tempRing.get(i)){
+                            y = tempRing.get(i);
+                        }
+                    }
+                    st++;
+                }
+            }
 
         int leaderAd = 0;
         //add notification
