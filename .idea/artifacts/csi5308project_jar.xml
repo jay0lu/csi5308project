@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="csi5308project:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/csi5308project_jar</output-path>
+    <root id="archive" name="csi5308project.jar">
+      <element id="module-output" name="csi5308project" />
+    </root>
+  </artifact>
+</component>
