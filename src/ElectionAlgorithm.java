@@ -331,8 +331,7 @@ public class ElectionAlgorithm {
 
         long endTime = System.nanoTime(); //algorithm end time
 
-        System.out.println("stage number "+st);
-        System.out.println("| The leader is at " + (leaderAd + 1));
+        System.out.println("| stage number "+st);
         System.out.println("| The message complexity is: " + st*ringElection.numNode);
         System.out.println("| Running time： "+(endTime-startTime)/1000+"µs");
         System.out.println("***********************************************\n");
